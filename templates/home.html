@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-3 my-2">
+        {% for task in data %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Task ID: {{task.id}}</h5>
+                    <h4 class="card-title fw-bold mb-2">{{task.task_title}}</h4>
+                    <p class="card-subtitle fw-semibold">Task Assigned On: {{task.task_assigned_date|date}}</p>
+                    <p class="card-text mt-3 fw-medium" style="font-size: 17px; white-space: pre-wrap;">{{task.task_description|safe}}</p>
+                    <div class="d-flex items-center flex-wrap">
+                        {% for cat in task.category.all %}
+                            <span class="text-primary fw-medium me-2 mb-1">#{{cat.name}}</span>
+                        {% endfor %}
+                    </div>         
+                </div>
+                {% if task.is_completed == True %}
+                <div class="card-footer d-flex justify-content-between align-items-center" style="height: 50px;">
+                    <h6 class="my-auto text-success" style="font-size: 17px;">This Task is Completed.</h6>
+                    <span class="fs-5">✅</span>
+                </div>
+                {% else %}
+                <div class="card-footer d-flex justify-content-between align-items-center" style="height: 50px;">
+                    <a href="{% url 'edit_task' task.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+ </div>
+{% endblock %}
